@@ -25,6 +25,8 @@ public class ClientTCP {
             try {
                 socket = new Socket(InetAddress.getByName(tempArgs[0]),port);
 
+                System.out.println("Oczekiwanie na polaczenie lub wolne miejsce" + System.lineSeparator());
+
                 //odbieranie od servera
                 InputStreamReader in = new InputStreamReader(socket.getInputStream());
                 BufferedReader bf = new BufferedReader(in);
@@ -38,6 +40,11 @@ public class ClientTCP {
                 String answer;
 
                 while(( question = bf.readLine()) != null) {
+
+                    if(question.equals("timeError")){
+                        if((question = bf.readLine())==null) question = " ";
+                        System.out.println("Minal czas na odpowiedz");
+                    }
 
                     System.out.println(question);
 

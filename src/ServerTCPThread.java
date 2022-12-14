@@ -1,14 +1,19 @@
 import java.io.*;
 import java.net.Socket;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 public class ServerTCPThread extends Thread{
     Socket mySocket;
+    static int connectedClients = 0;
 
     public ServerTCPThread(Socket socket)
     {
         super();
         mySocket = socket;
     }
+
 
     public void run()
     {
@@ -29,8 +34,18 @@ public class ServerTCPThread extends Thread{
             //zapisywanie odpowiedzi do pliku od klienta
             FileWriter fwA = new FileWriter("bazaOdpowiedzi.txt", true);
             BufferedWriter bwA = new BufferedWriter(fwA);
-
             String answer;
+
+            //odczytanie poprawnej odpowiedzi
+            FileReader frCA = new FileReader("poprawneOdpowiedzi.txt");
+            BufferedReader brCA = new BufferedReader(frCA);
+            String correctAnswer;
+
+            //zapis wyników
+            FileWriter fwR = new FileWriter("wyniki.txt", true);
+            BufferedWriter bwR = new BufferedWriter(fwR);
+            int punkty = 0;
+            String name;
 
             pw.println("Podaj imie i nazwisko: ");
             pw.flush();
@@ -39,25 +54,46 @@ public class ServerTCPThread extends Thread{
             System.out.println(answer);
 
             bwA.append(answer + System.lineSeparator());
+            name = answer;
 
             while((question = brQ.readLine()) != null){
+
                 pw.println(question);
                 pw.flush();
 
-                    Thread.sleep(5000);
-                    if((answer = bf.readLine()) == null) {
-                        pw.println("Czas na odpowiedz sie skonczyl");
-                        pw.flush();
+                Instant now = Instant.now();
+                Instant now2 = now.plus(5, ChronoUnit.SECONDS);
+
+                while((answer = bf.readLine()) == null){}
+
+                Instant later = Instant.now();
+
+                var duration = Duration.between(now, later);
+                var MAX_RESPONSE_TIME = Duration.between(now, now2);
+                correctAnswer = brCA.readLine();
+                if(duration.compareTo(MAX_RESPONSE_TIME)>0){
+                    pw.println("timeError");
+                    pw.flush();
+                    bwA.append("brak odpowiedzi" + System.lineSeparator());
+
+                }else {
+                    bwA.append(answer + System.lineSeparator());
+                    if(answer.equals(correctAnswer)){
+                        punkty++;
                     }
-            //    while((answer = bf.readLine()) == null){}
-                System.out.println(answer);
+                }
 
-                bwA.append(answer + System.lineSeparator());
 
+                    System.out.println(answer);
             }
-            frQ.close();
+            bwR.append(name + " " + punkty + System.lineSeparator());
+            brQ.close();
             bwA.close();
+            brCA.close();
+            bwR.close();
 
+            mySocket.close();
+            connectedClients--;
 
 
 
