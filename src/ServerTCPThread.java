@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 public class ServerTCPThread extends Thread{
@@ -21,7 +18,7 @@ public class ServerTCPThread extends Thread{
             PrintWriter pw = new PrintWriter(mySocket.getOutputStream());
 
             //czytanie pytan przez serwer
-            FileReader frQ = new FileReader("questions.txt");
+            FileReader frQ = new FileReader("bazaPytan.txt");
             BufferedReader brQ = new BufferedReader(frQ);
             String question;
 
@@ -29,16 +26,37 @@ public class ServerTCPThread extends Thread{
             InputStreamReader in = new InputStreamReader(mySocket.getInputStream());
             BufferedReader bf = new BufferedReader(in);
 
-            String str;
+            //zapisywanie odpowiedzi do pliku od klienta
+            FileWriter fwA = new FileWriter("bazaOdpowiedzi.txt", true);
+            BufferedWriter bwA = new BufferedWriter(fwA);
+
+            String answer;
+
+            pw.println("Podaj imie i nazwisko: ");
+            pw.flush();
+
+            while((answer = bf.readLine()) == null){}
+            System.out.println(answer);
+
+            bwA.append(answer + System.lineSeparator());
 
             while((question = brQ.readLine()) != null){
                 pw.println(question);
                 pw.flush();
 
-                while((str = bf.readLine()) == null){}
-                System.out.println(str);
+                    Thread.sleep(5000);
+                    if((answer = bf.readLine()) == null) {
+                        pw.println("Czas na odpowiedz sie skonczyl");
+                        pw.flush();
+                    }
+            //    while((answer = bf.readLine()) == null){}
+                System.out.println(answer);
+
+                bwA.append(answer + System.lineSeparator());
 
             }
+            frQ.close();
+            bwA.close();
 
 
 

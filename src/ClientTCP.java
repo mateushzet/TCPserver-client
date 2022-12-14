@@ -28,7 +28,7 @@ public class ClientTCP {
                 //odbieranie od servera
                 InputStreamReader in = new InputStreamReader(socket.getInputStream());
                 BufferedReader bf = new BufferedReader(in);
-                String str;
+                String question;
 
                 //wysylanie do servera
                 PrintWriter pw = new PrintWriter(socket.getOutputStream());
@@ -37,9 +37,9 @@ public class ClientTCP {
                 Scanner sc = new Scanner(System.in);
                 String answer;
 
-                while(( str = bf.readLine()) != null) {
+                while(( question = bf.readLine()) != null) {
 
-                    System.out.println(str);
+                    System.out.println(question);
 
                     answer = sc.nextLine();
                     pw.println(answer);

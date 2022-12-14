@@ -1,6 +1,0 @@
-pytanie 1
-pytanie 2
-pytanie 3
-pytanie 4
-pytanie 5
-koniec

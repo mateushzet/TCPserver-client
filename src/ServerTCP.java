@@ -8,13 +8,13 @@ public class ServerTCP {
             Socket[] clientSocket = new Socket[250];
 
             if (tempArgs.length == 0)
-                System.out.println("WprowadZ numer portu, na ktorym" + "serwer bpdzie oczekiwai na klientOw");
+                System.out.println("Wprowadz numer portu, na ktorym" + "serwer bpdzie oczekiwai na klientOw");
             else {
                 int port = 0;
                 try {
                     port = Integer.parseInt(tempArgs[0]);
                 }catch (NumberFormatException e) {
-                    System.err.println("Wprowad poprawny numer portu: " + e);
+                    System.err.println("Wprowadz poprawny numer portu: " + e);
                 return;
                 }
         try(ServerSocket serverSocket = new ServerSocket(port)) {
