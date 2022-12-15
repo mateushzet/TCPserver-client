@@ -7,6 +7,7 @@ import java.time.temporal.ChronoUnit;
 public class ServerTCPThread extends Thread{
     Socket mySocket;
     static int connectedClients = 0;
+    int questionCount = 0;
 
     public ServerTCPThread(Socket socket)
     {
@@ -57,7 +58,7 @@ public class ServerTCPThread extends Thread{
             name = answer;
 
             while((question = brQ.readLine()) != null){
-
+                questionCount++;
                 pw.println(question);
                 pw.flush();
 
@@ -75,17 +76,18 @@ public class ServerTCPThread extends Thread{
                     pw.println("timeError");
                     pw.flush();
                     bwA.append("brak odpowiedzi" + System.lineSeparator());
-
                 }else {
                     bwA.append(answer + System.lineSeparator());
                     if(answer.equals(correctAnswer)){
                         punkty++;
                     }
                 }
-
-
                     System.out.println(answer);
             }
+            pw.println("Ilosc zdobytych punktow " + punkty +"/"+questionCount + ", klikni enter aby zakonczyc");
+            pw.flush();
+            while((answer = bf.readLine()) == null){}
+
             bwR.append(name + " " + punkty + System.lineSeparator());
             brQ.close();
             bwA.close();
