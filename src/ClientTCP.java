@@ -47,7 +47,6 @@ public class ClientTCP {
                     }
 
                     System.out.println(question);
-
                     answer = sc.nextLine();
                     pw.println(answer);
                     pw.flush();
@@ -55,9 +54,6 @@ public class ClientTCP {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
-
         }
-
     }
 }

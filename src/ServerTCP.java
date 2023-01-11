@@ -7,6 +7,7 @@ public class ServerTCP {
             String[] tempArgs = new String[1];
             tempArgs[0] = "4999";
             final int MAX_CLIENT_CAPACITY = 250;
+            boolean quit = false;
 
             if (tempArgs.length == 0)
                 System.out.println("Wprowadz numer portu, na ktorym" + "serwer bpdzie oczekiwai na klientOw");
@@ -21,7 +22,7 @@ public class ServerTCP {
 
         try(ServerSocket serverSocket = new ServerSocket(port)) {
             int i = 0;
-            while (true) {
+            while (!quit) {
                 if(ServerTCPThread.connectedClients < MAX_CLIENT_CAPACITY) {
                     ServerTCPThread thread = new ServerTCPThread(serverSocket.accept());
                     i++;
@@ -35,5 +36,6 @@ public class ServerTCP {
           }catch (Exception e)
             { System.err.println(e); }
         }
+            server.close();
 }
 }

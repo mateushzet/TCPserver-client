@@ -15,9 +15,7 @@ public class ServerTCPThread extends Thread{
         mySocket = socket;
     }
 
-
-    public void run()
-    {
+    public void run() {
         try{
 
             //przesylanie do klienta
@@ -96,8 +94,6 @@ public class ServerTCPThread extends Thread{
 
             mySocket.close();
             connectedClients--;
-
-
 
         }catch (Exception e){
             System.err.println(e);
