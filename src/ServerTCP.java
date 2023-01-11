@@ -32,10 +32,10 @@ public class ServerTCP {
                 }else System.out.println("Wszystkie miejsca zajete");
           }
 
-
+            serverSocket.close();
           }catch (Exception e)
             { System.err.println(e); }
         }
-            server.close();
+
 }
 }
